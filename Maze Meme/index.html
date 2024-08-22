@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Maze Runner Game</title>
+    <style>
+        body {
+            margin: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #000;
+            color: #fff;
+            font-family: Arial, sans-serif;
+        }
+
+        #maze {
+            width: 400px;
+            height: 400px;
+            position: relative;
+            border: 2px solid #fff;
+            background-color: #fff;
+        }
+
+        .wall {
+            position: absolute;
+            background-color: #000;
+            z-index: 2;
+            width: 10px;
+            height: 100px;
+        }
+
+        .start, .end {
+            position: absolute;
+            width: 30px;
+            height: 30px;
+            background-color: #000;
+            color: #fff;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 1;
+        }
+
+        .start {
+            top: 0;
+            left: 0;
+            background-color: #007bff;
+        }
+
+        .end {
+            bottom: 0;
+            right: 0;
+            background-color: #28a745;
+        }
+
+        #path {
+            position: absolute;
+            z-index: 1;
+            width: 4px;
+            background-color: #ff0000;
+        }
+
+        #message {
+            display: none;
+            font-size: 20px;
+            text-align: center;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            white-space: nowrap;
+        }
+    </style>
+</head>
+<body>
+    <div id="maze">
+        <!-- Walls -->
+        <div class="wall" style="top: 50px; left: 0; height: 300px;"></div>
+        <div class="wall" style="top: 50px; left: 50px; width: 200px; height: 10px;"></div>
+        <div class="wall" style="top: 150px; left: 100px; width: 10px; height: 200px;"></div>
+        <div class="wall" style="top: 300px; left: 200px; width: 200px; height: 10px;"></div>
+        <div class="wall" style="top: 150px; left: 150px; width: 200px; height: 10px;"></div>
+        <div class="wall" style="top: 150px; left: 350px; width: 10px; height: 250px;"></div>
+
+        <!-- Start and End Points -->
+        <div class="start">Start</div>
+        <div id="end" class="end">End</div>
+
+        <!-- Path Line -->
+        <div id="path"></div>
+    </div>
+
+    <div id="message">Bumalik kana sa akin</div>
+
+    <script>
+        const maze = document.getElementById('maze');
+        const end = document.getElementById('end');
+        const path = document.getElementById('path');
+        const message = document.getElementById('message');
+
+        let isGameStarted = false;
+        let pathPoints = [];
+
+        // Start the game on hover over the start point
+        document.querySelector('.start').addEventListener('mouseenter', () => {
+            isGameStarted = true;
+            pathPoints = [];
+        });
+
+        // Track the path of the cursor
+        maze.addEventListener('mousemove', (e) => {
+            if (isGameStarted) {
+                const rect = maze.getBoundingClientRect();
+                const x = e.clientX - rect.left;
+                const y = e.clientY - rect.top;
+                pathPoints.push({ x, y });
+                drawPath();
+            }
+        });
+
+        // End the game on hover over the end point
+        end.addEventListener('mouseenter', () => {
+            if (isGameStarted) {
+                showEndMessage();
+            }
+        });
+
+        // If the player touches a wall, restart the game
+        document.querySelectorAll('.wall').forEach(wall => {
+            wall.addEventListener('mouseenter', () => {
+                if (isGameStarted) {
+                    alert('You hit a wall! Start again.');
+                    resetGame();
+                }
+            });
+        });
+
+        function drawPath() {
+            const d = pathPoints.map(point => `${point.x}px, ${point.y}px`).join(' L');
+            path.style.clipPath = `path('M ${d}')`;
+        }
+
+        function showEndMessage() {
+            isGameStarted = false;
+            message.style.display = 'block';
+            growMessage();
+        }
+
+        function growMessage() {
+            let fontSize = 20;
+            const interval = setInterval(() => {
+                fontSize += 2;
+                message.style.fontSize = fontSize + 'px';
+                if (fontSize > 100) {
+                    clearInterval(interval);
+                }
+            }, 100);
+        }
+
+        function resetGame() {
+            isGameStarted = false;
+            pathPoints = [];
+            path.style.clipPath = 'none';
+            message.style.display = 'none';
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Simple Banking</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #000;
+            color: #fff;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            position: relative;
+        }
+        .container {
+            background-color: #222;
+            padding: 20px;
+            border-radius: 10px;
+            width: 300px;
+            text-align: center;
+        }
+        h1 {
+            margin-bottom: 20px;
+            font-size: 24px;
+        }
+        .balance {
+            font-size: 18px;
+            margin-bottom: 20px;
+        }
+        input[type="number"] {
+            width: 93%;
+            padding: 10px;
+            margin-bottom: 10px;
+            border: none;
+            border-radius: 5px;
+        }
+        button {
+            width: 100%;
+            padding: 10px;
+            background-color: #444;
+            border: none;
+            border-radius: 5px;
+            color: #fff;
+            cursor: pointer;
+            font-size: 16px;
+            margin-bottom: 10px;
+        }
+        button:hover {
+            background-color: #666;
+        }
+        .message {
+            margin-top: 20px;
+            font-size: 16px;
+        }
+        .pop-up-text {
+            position: absolute;
+            color: red;
+            font-size: 18px;
+            animation: fadeMove 3s linear infinite;
+        }
+        @keyframes fadeMove {
+            0% { opacity: 1; }
+            100% { opacity: 0; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Simple Banking</h1>
+        <div class="balance">
+            Balance: ₱<span id="balance">0</span>
+        </div>
+        <input type="number" id="amount" placeholder="Enter amount">
+        <button onclick="deposit()">Deposit</button>
+        <button onclick="withdraw()">Withdraw</button>
+        <button onclick="cancel()">Cancel</button>
+        <div class="message" id="message"></div>
+    </div>
+
+    <script>
+        let balance = parseFloat(localStorage.getItem('balance')) || 0;
+
+        document.addEventListener('DOMContentLoaded', updateBalance);
+
+        function deposit() {
+            const amount = parseFloat(document.getElementById('amount').value);
+            if (amount > 0) {
+                balance += amount;
+                updateBalance();
+                showMessage(`Successfully deposited ₱${amount}`);
+            } else {
+                showMessage('Enter a valid amount to deposit.');
+            }
+        }
+
+        function withdraw() {
+            const amount = parseFloat(document.getElementById('amount').value);
+            if (amount > 0 && amount <= balance) {
+                balance -= amount;
+                updateBalance();
+                showMessage(`Successfully withdrew ₱${amount}`);
+            } else if (amount > balance) {
+                showMessage('Insufficient balance.');
+            } else {
+                showMessage('Enter a valid amount to withdraw.');
+            }
+        }
+
+        function cancel() {
+            for (let i = 0; i < 5; i++) {
+                const popUpText = document.createElement('div');
+                popUpText.className = 'pop-up-text';
+                popUpText.textContent = 'Ako pa rin ba?';
+                popUpText.style.top = `${Math.random() * 90}vh`;
+                popUpText.style.left = `${Math.random() * 90}vw`;
+                document.body.appendChild(popUpText);
+                setTimeout(() => popUpText.remove(), 3000);
+            }
+        }
+
+        function updateBalance() {
+            document.getElementById('balance').textContent = balance.toFixed(2);
+            localStorage.setItem('balance', balance);
+        }
+
+        function showMessage(message) {
+            document.getElementById('message').textContent = message;
+        }
+    </script>
+</body>
+</html>

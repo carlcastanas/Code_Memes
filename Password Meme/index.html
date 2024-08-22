@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Password Strength Checker</title>
+    <style>
+        body {
+            background-color: #000;
+            color: #fff;
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+        .container {
+            text-align: center;
+            width: 300px;
+        }
+        .input-container {
+            position: relative;
+            width: 100%;
+        }
+        input[type="password"], input[type="text"] {
+            width: 70%;
+            padding: 10px;
+            padding-right: 40px; /* Space for the eye icon */
+            margin-bottom: 10px;
+            border: 1px solid #fff;
+            background-color: #333;
+            color: #fff;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+        .eye-icon {
+            position: absolute;
+            right: 30px;
+            top: 40%;
+            transform: translateY(-50%);
+            cursor: pointer;
+            color: #ccc;
+        }
+        .strength {
+            font-weight: bold;
+            padding: 10px;
+            border-radius: 5px;
+        }
+        .weak {
+            color: #f00;
+        }
+        .strong {
+            color: #0f0;
+        }
+        .roast {
+            color: #ff8c00;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>Password Strength Checker</h2>
+        <div class="input-container">
+            <input type="password" id="password" placeholder="Enter your password" onkeyup="checkPasswordStrength()">
+            <span class="eye-icon" onclick="togglePasswordVisibility()">&#128065;</span>
+        </div>
+        <div id="strengthResult" class="strength"></div>
+    </div>
+
+    <script>
+        function checkPasswordStrength() {
+            const password = document.getElementById('password').value;
+            const strengthResult = document.getElementById('strengthResult');
+
+            if (password === "I miss you so much") {
+                strengthResult.textContent = "Seriously? You typed that here? You deserve more than a weak password warning—get a grip!";
+                strengthResult.className = "strength roast";
+            } else if (password.length < 6) {
+                strengthResult.textContent = "Too weak, just like your Wi-Fi signal.";
+                strengthResult.className = "strength weak";
+            } else if (password.length < 10) {
+                strengthResult.textContent = "Not bad, but it's like running in flip-flops—try harder.";
+                strengthResult.className = "strength weak";
+            } else {
+                strengthResult.textContent = "Strong password, you're finally getting it!";
+                strengthResult.className = "strength strong";
+            }
+        }
+
+        function togglePasswordVisibility() {
+            const passwordInput = document.getElementById('password');
+            const eyeIcon = document.querySelector('.eye-icon');
+            if (passwordInput.type === 'password') {
+                passwordInput.type = 'text';
+                eyeIcon.textContent = '🙈'; // Hide eye icon
+            } else {
+                passwordInput.type = 'password';
+                eyeIcon.textContent = '👁'; // Show eye icon
+            }
+        }
+    </script>
+</body>
+</html>
