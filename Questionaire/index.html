@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tech Job Quiz</title>
+    <style>
+        body {
+            background-color: #000;
+            color: #fff;
+            font-family: Arial, sans-serif;
+            text-align: center;
+            margin: 0;
+            padding: 20px;
+        }
+        h1 {
+            font-size: 2rem;
+        }
+        .question {
+            margin: 20px 0;
+        }
+        button {
+            background-color: #fff;
+            color: #000;
+            padding: 10px 20px;
+            border: none;
+            cursor: pointer;
+            margin: 10px;
+        }
+        button:hover {
+            background-color: #ccc;
+        }
+        #result {
+            display: none;
+            margin-top: 30px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Find Your Ideal Tech Job</h1>
+    <div id="quiz">
+        <!-- Questions 1 to 10 -->
+        <div class="question" id="question1">
+            <p>1. Do you enjoy solving complex problems?</p>
+            <button onclick="answer('developer', 10)">Yes</button>
+            <button onclick="answer('designer', 5)">No</button>
+        </div>
+        <div class="question" id="question2">
+            <p>2. Are you more interested in the visual aspects of technology?</p>
+            <button onclick="answer('designer', 10)">Yes</button>
+            <button onclick="answer('developer', 5)">No</button>
+        </div>
+        <div class="question" id="question3">
+            <p>3. Do you enjoy working with data?</p>
+            <button onclick="answer('data', 10)">Yes</button>
+            <button onclick="answer('developer', 5)">No</button>
+        </div>
+        <div class="question" id="question4">
+            <p>4. Do you prefer working with hardware over software?</p>
+            <button onclick="answer('hardware', 10)">Yes</button>
+            <button onclick="answer('developer', 5)">No</button>
+        </div>
+        <div class="question" id="question5">
+            <p>5. Are you interested in cybersecurity?</p>
+            <button onclick="answer('security', 10)">Yes</button>
+            <button onclick="answer('developer', 5)">No</button>
+        </div>
+        <div class="question" id="question6">
+            <p>6. Do you like building things from scratch?</p>
+            <button onclick="answer('developer', 10)">Yes</button>
+            <button onclick="answer('designer', 5)">No</button>
+        </div>
+        <div class="question" id="question7">
+            <p>7. Are you interested in artificial intelligence?</p>
+            <button onclick="answer('data', 10)">Yes</button>
+            <button onclick="answer('developer', 5)">No</button>
+        </div>
+        <div class="question" id="question8">
+            <p>8. Do you enjoy troubleshooting technical issues?</p>
+            <button onclick="answer('support', 10)">Yes</button>
+            <button onclick="answer('developer', 5)">No</button>
+        </div>
+        <div class="question" id="question9">
+            <p>9. Are you interested in creating user-friendly interfaces?</p>
+            <button onclick="answer('designer', 10)">Yes</button>
+            <button onclick="answer('developer', 5)">No</button>
+        </div>
+        <div class="question" id="question10">
+            <p>10. Do you like working with networks?</p>
+            <button onclick="answer('network', 10)">Yes</button>
+            <button onclick="answer('developer', 5)">No</button>
+        </div>
+
+        <!-- Additional Questions 11 to 20 -->
+        <div class="question" id="question11">
+            <p>11. Do you enjoy managing large-scale projects?</p>
+            <button onclick="answer('projectManager', 10)">Yes</button>
+            <button onclick="answer('developer', 5)">No</button>
+        </div>
+        <div class="question" id="question12">
+            <p>12. Are you interested in cloud computing?</p>
+            <button onclick="answer('cloudEngineer', 10)">Yes</button>
+            <button onclick="answer('developer', 5)">No</button>
+        </div>
+        <div class="question" id="question13">
+            <p>13. Do you have a passion for game development?</p>
+            <button onclick="answer('gameDeveloper', 10)">Yes</button>
+            <button onclick="answer('developer', 5)">No</button>
+        </div>
+        <div class="question" id="question14">
+            <p>14. Do you like testing and ensuring the quality of software?</p>
+            <button onclick="answer('tester', 10)">Yes</button>
+            <button onclick="answer('developer', 5)">No</button>
+        </div>
+        <div class="question" id="question15">
+            <p>15. Are you interested in mobile app development?</p>
+            <button onclick="answer('mobileDeveloper', 10)">Yes</button>
+            <button onclick="answer('developer', 5)">No</button>
+        </div>
+        <div class="question" id="question16">
+            <p>16. Do you enjoy working with databases?</p>
+            <button onclick="answer('databaseAdmin', 10)">Yes</button>
+            <button onclick="answer('developer', 5)">No</button>
+        </div>
+        <div class="question" id="question17">
+            <p>17. Are you interested in robotics and automation?</p>
+            <button onclick="answer('roboticsEngineer', 10)">Yes</button>
+            <button onclick="answer('developer', 5)">No</button>
+        </div>
+        <div class="question" id="question18">
+            <p>18. Do you like working with AI and machine learning algorithms?</p>
+            <button onclick="answer('aiEngineer', 10)">Yes</button>
+            <button onclick="answer('developer', 5)">No</button>
+        </div>
+        <div class="question" id="question19">
+            <p>19. Are you interested in UX/UI design?</p>
+            <button onclick="answer('uxDesigner', 10)">Yes</button>
+            <button onclick="answer('developer', 5)">No</button>
+        </div>
+        <div class="question" id="question20">
+            <p>20. Do you enjoy working with embedded systems?</p>
+            <button onclick="answer('embeddedEngineer', 10)">Yes</button>
+            <button onclick="answer('developer', 5)">No</button>
+        </div>
+    </div>
+
+    <div id="result">
+        <h2>Your Ideal Tech Job:</h2>
+        <p id="job"></p>
+    </div>
+
+    <script>
+        const scores = {
+            developer: 0,
+            designer: 0,
+            data: 0,
+            hardware: 0,
+            security: 0,
+            support: 0,
+            network: 0,
+            projectManager: 0,
+            cloudEngineer: 0,
+            gameDeveloper: 0,
+            tester: 0,
+            mobileDeveloper: 0,
+            databaseAdmin: 0,
+            roboticsEngineer: 0,
+            aiEngineer: 0,
+            uxDesigner: 0,
+            embeddedEngineer: 0
+        };
+        let currentQuestion = 1;
+
+        function answer(job, points) {
+            scores[job] += points;
+            currentQuestion++;
+            if (currentQuestion <= 20) {
+                document.getElementById(`question${currentQuestion - 1}`).style.display = 'none';
+                document.getElementById(`question${currentQuestion}`).style.display = 'block';
+            } else {
+                calculateResult();
+            }
+        }
+
+        function calculateResult() {
+            document.getElementById('quiz').style.display = 'none';
+            document.getElementById('result').style.display = 'block';
+
+            const maxScore = Math.max(...Object.values(scores));
+            const recommendedJobs = Object.keys(scores).filter(job => scores[job] === maxScore);
+            const jobPercentages = recommendedJobs.map(job => ({
+                job,
+                percentage: ((scores[job] / maxScore) * 100).toFixed(0)
+            }));
+
+            let resultText = jobPercentages.map(jp => `${jp.job.charAt(0).toUpperCase() + jp.job.slice(1)}: ${jp.percentage}%`).join('<br>');
+            resultText += '<br><br><strong>IT (International Tambay): 100%</strong>';
+
+            document.getElementById('job').innerHTML = resultText;
+        }
+
+        window.onload = function () {
+            document.getElementById('question1').style.display = 'block';
+            for (let i = 2; i <= 20; i++) {
+                document.getElementById(`question${i}`).style.display = 'none';
+            }
+        };
+    </script>
+</body>
+</html>
+
